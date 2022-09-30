@@ -53,7 +53,7 @@ def save_filter_options(save_path):
     filter_options = get_filter_options()
     print("Creating file with filter options for you to check...")
     file = open(full_path, "w")
-    json.dump(filter_options, file)
+    json.dump(filter_options, file, indent=1)
     file.close()
     print(f"File saved as {file_name}.json in 'OUTPUTS' folder.")
 
@@ -342,8 +342,8 @@ def main():
     parsed_args = parser.parse_args()
 
     # run save_filter_options() based on CLI input
-    if parsed_args.options == True and not os.path.exists(OUTPUT_DIRECTORY + "WAHIS_filter_options.json"):
-        save_filter_options(OUTPUT_DIRECTORY)
+    #if parsed_args.options == True and not os.path.exists(OUTPUT_DIRECTORY + "WAHIS_filter_options.json"):
+    #    save_filter_options(OUTPUT_DIRECTORY)
 
     # get current directory and create new folder "ouputs" if it doesn't exhist
     CURRENT_DIRECTORY = os.getcwd()
@@ -351,6 +351,9 @@ def main():
     if not os.path.exists(OUTPUT_DIRECTORY):
         os.makedirs(OUTPUT_DIRECTORY)
     EXPORT_NAME = "WAHIS_ReportOutbreaks"
+
+    if parsed_args.options == True and not os.path.exists(OUTPUT_DIRECTORY + "WAHIS_filter_options.json"):
+        save_filter_options(OUTPUT_DIRECTORY)
 
     ########################
     ### Main tool logic. ###
@@ -406,10 +409,10 @@ def main():
                         # Make pandas dataframe ( aka "table") with data we've built up to this point
                         df_amalgam_reports_final = pd.json_normalize(amalgam_reports_final)
                         # df_amalgam_reports_final = pd.DataFrame.from_records(amalgam_reports_final, index=None, exclude=None, columns=None, coerce_float=False, nrows=None)
-                        try:
-                            df_amalgam_reports_final.to_excel(f'{OUTPUT_DIRECTORY}/{EXPORT_NAME}_{file_save_counter}.xlsx', index=False)
-                        except:
-                            df_amalgam_reports_final.to_csv(f'{OUTPUT_DIRECTORY}/{EXPORT_NAME}_{file_save_counter}.csv', index=False)
+                        #try:
+                        #    df_amalgam_reports_final.to_excel(f'{OUTPUT_DIRECTORY}/{EXPORT_NAME}_{file_save_counter}.xlsx', index=False)
+                        #except:
+                        df_amalgam_reports_final.to_csv(f'{OUTPUT_DIRECTORY}/{EXPORT_NAME}_{file_save_counter}.csv', index=False)
                             # once the outbreak dataframe has been exported as a csv we no longer need it. Delete to save RAM.
                         del df_amalgam_reports_final
                         # clear all contents of the list of outbreaks
